@@ -1,0 +1,22 @@
+# 消融：关掉通道图（topk=1 且 gamma 固定为 0 时退化为逐通道独立自编码器）
+# 这里用 gamma_init: 0.0 + sparsity: 0.0 消除通道间消息传递，
+# 用来回答「收益到底来自通道建模，还是仅仅来自更强的 backbone」。
+model:
+  name: ours
+  params:
+    window: 64
+    stride: 4
+    epochs: 20
+    batch_size: 128
+    lr: 0.001
+    hidden: 64
+    latent: 32
+    topk: 1
+    gamma_init: 0.0
+    init_std: 0.01
+    sparsity: 0.0
+    n_env: 1
+    env_penalty: 0.0
+    tta: false
+    seed: 42
+    verbose: true

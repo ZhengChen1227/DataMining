@@ -1,0 +1,14 @@
+numpy>=1.26
+scipy>=1.11
+pandas>=2.1
+PyYAML>=6.0
+matplotlib>=3.8
+tqdm>=4.66
+scikit-learn>=1.4
+# 经典基线（可选，缺失时对应检测器会给出明确报错）
+pyod>=1.1
+# 深度学习模型（CPU 也能跑通，CUDA 更快）
+torch>=2.2
+# 第三方方法适配（按需手动安装官方仓库）
+# tsb-ad  -> 见 data/README.md
+# anomaly-transformer / DCdetector -> 见 src/models/deep.py 顶部注释

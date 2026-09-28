@@ -1,0 +1,14 @@
+# 卷积自编码器：深度方法的 backbone 对照
+model:
+  name: convae
+  params:
+    window: 64
+    stride: 4
+    epochs: 20
+    batch_size: 128
+    lr: 0.001
+    hidden: 64
+    latent: 32
+    dropout: 0.0
+    seed: 42
+    verbose: true

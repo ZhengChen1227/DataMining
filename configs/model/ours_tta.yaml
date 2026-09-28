@@ -1,0 +1,27 @@
+# 完整版本：通道图 + 不变性 + 测试时校准
+model:
+  name: ours
+  params:
+    window: 64
+    stride: 4
+    epochs: 20
+    batch_size: 128
+    lr: 0.001
+    weight_decay: 0.00001
+    hidden: 64
+    latent: 32
+    dropout: 0.0
+    topk: 3
+    gamma_init: 0.1
+    init_std: 0.01
+    sparsity: 0.001
+    n_env: 4
+    env_penalty: 0.1
+    # TTA 两级分开报告：recenter（重估统计量）与 finetune（自监督微调）
+    tta: true
+    tta_finetune: true
+    tta_steps: 30
+    tta_lr: 0.0001
+    tta_scope: norm
+    seed: 42
+    verbose: true

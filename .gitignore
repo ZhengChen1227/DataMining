@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+
+# 数据与运行产物
+data/raw/
+data/processed/
+results/*/
+!results/.gitkeep
+
+# 编辑器
+.vscode/
+.idea/
+.DS_Store

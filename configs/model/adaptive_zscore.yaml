@@ -1,0 +1,7 @@
+# 最有威胁的基线：在测试流上重算归一化统计量。
+# 它把「分布漂移」降级成「没做在线归一化」，是必须打败的对照。
+model:
+  name: adaptive_zscore
+  params:
+    window: 1
+    stride: 1

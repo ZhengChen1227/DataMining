@@ -1,0 +1,6 @@
+# 最朴素基线：逐时刻 z-score 的 L2 范数。所有方法都必须打败它。
+model:
+  name: zscore
+  params:
+    window: 1
+    stride: 1

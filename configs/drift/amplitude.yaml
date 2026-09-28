@@ -1,0 +1,9 @@
+# 幅度漂移：x' = scale * x + offset，逐通道随机。
+# 专门打击依赖固定阈值 / 固定边缘分布的方法。
+# 注意 scale 是相对量：全局统一缩放会被 z-score 归一化吸收，不能用作漂移。
+drift:
+  name: amplitude
+  params:
+    scale_std: 0.3
+    offset_std: 0.5
+    per_channel: true

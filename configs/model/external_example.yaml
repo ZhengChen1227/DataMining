@@ -1,0 +1,10 @@
+# 第三方官方实现的接入示例（Anomaly Transformer / DCdetector / TimesNet 等）。
+# 把 adapters/example.py 复制成 adapters/anomaly_transformer.py 并填写实现即可。
+model:
+  name: external
+  import_path: adapters.example
+  entrypoint: fit_score
+  repo: https://github.com/thuml/Anomaly-Transformer
+  params:
+    window: 100
+    stride: 1

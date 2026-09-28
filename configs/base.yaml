@@ -1,0 +1,38 @@
+# 默认配置：所有实验的公共部分。
+# 具体实验用 `-c configs/base.yaml -c configs/model/xxx.yaml` 叠加覆盖。
+# 命令行 `-o key=value` 优先级最高。
+
+seed: 42
+
+data:
+  # synthetic | tsb_ad
+  name: tsb_ad
+  root: data/raw/tsb-ad
+  # zscore | robust | none
+  # 注意：归一化只使用训练段统计量，且必须先归一化再施加漂移
+  normalize: zscore
+  subsets: null            # 例如 [SMAP, MSL]，null 表示全部
+  limit: null              # 只取前 N 个子集，便于快速迭代
+  min_anomaly_ratio: 0.0   # 过滤掉几乎没有异常的子集
+  params: {}               # data.name=synthetic 时传给合成数据生成器
+
+drift:
+  name: none
+  params: {}
+
+model:
+  name: zscore
+  params: {}
+
+eval:
+  metrics:
+    - auc_roc
+    - auc_pr
+    - best_f1
+    - vus_pr
+    # 对照列，论文正文不要用它当主指标
+    # - point_adjust_f1
+  buffer_sizes: [0, 1, 5, 10, 50, 100]
+
+output:
+  dir: results

@@ -1,0 +1,10 @@
+# 隔离森林（需要 pip install pyod）
+model:
+  name: iforest
+  params:
+    window: 1
+    stride: 1
+    n_estimators: 200
+    contamination: auto
+    random_state: 42
+    n_jobs: -1
