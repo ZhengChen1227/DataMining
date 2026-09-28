@@ -1,0 +1,7 @@
+# 仓库内统一使用 LF，避免 Windows/macOS/Linux 之间来回改动行尾。
+# scripts/run_all.sh 带 shebang，如果被换成 CRLF 在 Linux 上会直接跑不起来。
+* text=auto eol=lf
+
+*.ps1 text eol=crlf
+*.png binary
+*.npy binary
