@@ -81,12 +81,10 @@ results/      配置、环境、结果、分数、划分、图表
 reports/      后续正式论文的预留位置（阶段一不生成）
 ```
 
-## 旧项目的可追溯性
+## 项目版本
 
-旧时序异常检测版本的提交为 `714f7798f53d1b4c69c55393510fab0be47547eb`，
-本地标签为 `archive/tsad-before-ablp`；新工作位于 `feature/ablp-course-project`。
-查看旧版可使用 `git show archive/tsad-before-ablp:README.md`，无需切换或覆盖当前文件。
-阶段一版本位于 [feature/ablp-course-project 开发分支](https://github.com/ZhengChen1227/DataMining/tree/feature/ablp-course-project)，默认分支保留旧版，合并另行安排。
+默认分支 [main](https://github.com/ZhengChen1227/DataMining) 使用新版 ABLP 链接预测项目。
+当前目录仅包含链接预测相关实现、文档与实验结果。
 
 ## 后续完整实验
 
