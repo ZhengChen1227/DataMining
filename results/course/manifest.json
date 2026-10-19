@@ -1,0 +1,55 @@
+{
+  "identity": "ae54f895c4c504d611c7244da6d886285636585e368f807d404e2716ffd33792",
+  "config": {
+    "datasets": [
+      "ca-GrQc",
+      "email-Eu-core"
+    ],
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "retentions": [
+      1.0,
+      0.75,
+      0.5
+    ],
+    "budgets": [
+      10,
+      30,
+      100,
+      300
+    ],
+    "epsilons": [
+      0.001,
+      0.01,
+      0.1
+    ],
+    "negative_ratios": [
+      1,
+      10
+    ],
+    "max_hours": 8,
+    "output": "results/course"
+  },
+  "environment": {
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+    "packages": {
+      "numpy": "2.5.4",
+      "scipy": "1.18.1",
+      "networkx": "3.7",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.0.6",
+      "matplotlib": "3.11.2",
+      "PyYAML": "6.0.3"
+    },
+    "git_head": "714f7798f53d1b4c69c55393510fab0be47547eb",
+    "git_status": " M .gitignore\n D README.md\n D adapters/README.md\n D adapters/__init__.py\n D adapters/example.py\n D configs/base.yaml\n D configs/drift/amplitude.yaml\n D configs/drift/channel.yaml\n D configs/drift/channel_mask.yaml\n D configs/drift/temporal.yaml\n D configs/model/adaptive_zscore.yaml\n D configs/model/convae.yaml\n D configs/model/external_example.yaml\n D configs/model/iforest.yaml\n D configs/model/ours.yaml\n D configs/model/ours_no_graph.yaml\n D configs/model/ours_tta.yaml\n D configs/model/zscore.yaml\n D data/README.md\n D data/download_tsb_ad.py\n D docs/drift_protocol.md\n D docs/experiment_plan.md\n D docs/proposal.md\n D docs/setup.md\n M requirements-dev.txt\n M requirements.txt\n M scripts/run_all.ps1\n D scripts/run_all.sh\n M scripts/run_smoke.ps1\n M src/__init__.py\n D src/datasets/__init__.py\n D src/datasets/base.py\n D src/datasets/synthetic.py\n D src/datasets/transforms.py\n D src/datasets/tsb_ad.py\n D src/drift/__init__.py\n D src/drift/amplitude.py\n D src/drift/channel.py\n D src/drift/protocol.py\n D src/drift/temporal.py\n D src/eval/__init__.py\n D src/eval/evaluator.py\n D src/eval/metrics.py\n D src/eval/official.py\n D src/eval/stats.py\n D src/evaluate.py\n D src/models/__init__.py\n D src/models/base.py\n D src/models/classic.py\n D src/models/deep.py\n D src/models/ours.py\n D src/models/window.py\n D src/train.py\n D src/utils/__init__.py\n D src/utils/config.py\n D src/utils/logging.py\n D src/utils/seed.py\n D tests/test_deep_models.py\n D tests/test_metrics.py\n M tests/test_pipeline.py\n?? configs/course.yaml\n?? configs/smoke.yaml\n?? results/smoke/\n?? src/__main__.py\n?? src/algorithms.py\n?? src/data.py\n?? src/experiment.py\n?? src/summary.py\n?? tests/test_algorithms.py\n",
+    "source_sha256": "2a9b12ca50541aceb745fb542cb51065c45044a7f4028885397d3d00ecf09cbe"
+  }
+}

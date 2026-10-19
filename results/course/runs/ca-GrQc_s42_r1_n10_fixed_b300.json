@@ -1,0 +1,68 @@
+{
+  "run_id": "ca-GrQc_s42_r1_n10_fixed_b300",
+  "dataset": "ca-GrQc",
+  "seed": 42,
+  "retention": 1.0,
+  "negative_ratio": 10,
+  "method": "fixed",
+  "budget": 300,
+  "epsilon": 0.01,
+  "n_candidates": 15939,
+  "train_nodes": 5242,
+  "train_edges": 11587,
+  "ap": 0.8449523713825892,
+  "roc_auc": 0.9214350250357092,
+  "zero_cn_fraction": 0.9230817491687057,
+  "zero_cn_count": 14713,
+  "zero_cn_positives": 279,
+  "zero_cn_metrics": {
+    "ap": 0.09048275931332339,
+    "roc_auc": 0.5982653462081514
+  },
+  "stats": {
+    "cn_checks": 41792,
+    "three_hop_visits": 429827,
+    "total_checks": 471619,
+    "budget_limit": 4781700,
+    "allocation_seconds": 3.5500008380040526e-05,
+    "wall_seconds": 0.15112029999727383,
+    "cpu_seconds": 0.15625
+  },
+  "validation_stats": {
+    "cn_checks": 39664,
+    "three_hop_visits": 395860,
+    "total_checks": 435524,
+    "budget_limit": 4778400,
+    "allocation_seconds": 3.5999983083456755e-05,
+    "wall_seconds": 0.15045310001005419,
+    "cpu_seconds": 0.140625
+  },
+  "validation": [
+    {
+      "epsilon": 0.001,
+      "ap": 0.828400201942074,
+      "roc_auc": 0.9131619198513476
+    },
+    {
+      "epsilon": 0.01,
+      "ap": 0.8284017293805641,
+      "roc_auc": 0.913161967545252
+    },
+    {
+      "epsilon": 0.1,
+      "ap": 0.8273833501283505,
+      "roc_auc": 0.9131115550883674
+    }
+  ],
+  "source_sha256": "2a9b12ca50541aceb745fb542cb51065c45044a7f4028885397d3d00ecf09cbe",
+  "data": {
+    "dataset": "ca-GrQc",
+    "sha256": "a254442cdf5d684712578b630c2e0d7543518ab154ef2341cabb607572ce7230",
+    "nodes": 5242,
+    "edges": 14484,
+    "source": "https://snap.stanford.edu/data/ca-GrQc.txt.gz",
+    "processing": "undirected, unweighted, no self-loops, unique edges; retain all nodes"
+  },
+  "split_file": "results\\course\\splits\\ca-GrQc_s42_r1_n10.npz",
+  "scores_file": "scores/ca-GrQc_s42_r1_n10_fixed_b300.npz"
+}

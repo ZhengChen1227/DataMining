@@ -1,64 +1,14 @@
-# 数据说明
+# 数据来源与使用范围
 
-本目录只放**下载脚本与格式说明**，原始数据不入库（见 `.gitignore` 的 `data/raw/`）。
+| 名称 | 官方页面 | 原始文件 |
+|---|---|---|
+| ca-GrQc | https://snap.stanford.edu/data/ca-GrQc.html | https://snap.stanford.edu/data/ca-GrQc.txt.gz |
+| email-Eu-core | https://snap.stanford.edu/data/email-Eu-core.html | https://snap.stanford.edu/data/email-Eu-core.txt.gz |
 
-## 目录结构
+下载入口：`python -m src prepare`。两个 gzip 总计约 185 KB，写入 data/raw。
+原始包不提交 Git，不附加自创许可证；使用和再分发须遵循原始网站及对应数据来源条款。
+引用数据时保留官方数据页面给出的出处。
 
-脚本会把所有数据源统一成下面这一种结构，加载器 `src/datasets/tsb_ad.py`
-只认这个结构：
-
-```
-data/raw/tsb-ad/
-  <subset_name>/             # 一个子集 = 一条多变量序列
-    train.npy                # (T_train, C) float32
-    test.npy                 # (T_test,  C) float32
-    test_label.npy           # (T_test,)  0/1 int8
-    meta.json                # 可选：{"name":..., "source":..., "period":...}
-```
-
-命名不匹配时的兼容规则（详见 `src/datasets/tsb_ad.py` 的 `*_PATTERNS`）：
-`train.npy` / `*_train.npy` / `train.csv` 都能识别，
-标签列名支持 `Label` / `label` / `is_anomaly` / `anomaly` / `target`。
-
-## 数据源
-
-| 数据 | 来源 | 许可证 / 说明 |
-| --- | --- | --- |
-| TSB-AD | https://github.com/TheDatumOrg/TSB-AD | NeurIPS 2024 D&B 基准，40+ 数据集统一格式，**推荐作为主基准** |
-| SMAP / MSL | NASA 遥测数据，TSB-AD 与 TODS 均已打包 | 公开研究用途 |
-| SWaT | https://itrust.sutd.edu.sg/testbeds/secure-water-treatment-swat/ | 需向 iTrust 申请，**不能直接分发给他人** |
-| SMD | https://github.com/NetManAIOps/OmniAnomaly | 服务器指标，随论文开源 |
-
-> 注意：SWaT 需要签署使用协议，只能自己申请下载，**不要把它提交到公开仓库**。
-> 这也是 `.gitignore` 屏蔽 `data/raw/` 的原因之一。
-
-## 下载
-
-```bash
-# 1) 克隆官方仓库并尝试自动转换
-python data/download_tsb_ad.py --root data/raw/tsb-ad
-
-# 2) 只克隆不转换（自己看官方目录结构）
-python data/download_tsb_ad.py --no-convert
-
-# 3) 从已有的本地目录转换（例如你手动下载到了别处）
-python data/download_tsb_ad.py --source /path/to/TSB-AD --root data/raw/tsb-ad
-```
-
-脚本找不到可以自动识别的文件时**不会假装成功**，而是列出它找到了什么、
-期望的命名是什么，你按上面的结构手动放好再跑一次即可。
-
-## 校验
-
-```bash
-python -c "
-from src.datasets.tsb_ad import list_subsets
-from src.datasets import build_dataset
-print(list_subsets('data/raw/tsb-ad'))
-b = build_dataset({'name': 'tsb_ad', 'root': 'data/raw/tsb-ad', 'limit': 3})
-print(b.summary())
-"
-```
-
-看到每条序列的通道数、训练/测试长度和异常占比就说明数据没问题。
-**如果异常占比是 0，说明标签没读对**，先回去检查标签文件，不要继续跑实验。
+ca-GrQc 表示科研合作关系。email-Eu-core 原始为有向邮件网络，本实验取无向投影，
+因此处理后的边数与原始页面统计可以不同。原始自环仍让节点进入节点集合，但不会进入边集合。
+数据不包含训练标签：正负例由静态随机留边协议构造，见 docs/protocol.md。

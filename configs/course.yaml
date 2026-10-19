@@ -1,0 +1,8 @@
+datasets: [ca-GrQc, email-Eu-core]
+seeds: [42, 43, 44, 45, 46]
+retentions: [1.0, 0.75, 0.5]
+budgets: [10, 30, 100, 300]
+epsilons: [0.001, 0.01, 0.1]
+negative_ratios: [1, 10]
+max_hours: 8
+output: results/course

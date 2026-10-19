@@ -1,0 +1,68 @@
+{
+  "run_id": "synthetic_s42_r0.5_n1_fixed_b10",
+  "dataset": "synthetic",
+  "seed": 42,
+  "retention": 0.5,
+  "negative_ratio": 1,
+  "method": "fixed",
+  "budget": 10,
+  "epsilon": 0.001,
+  "n_candidates": 58,
+  "train_nodes": 100,
+  "train_edges": 110,
+  "ap": 0.5551724137931033,
+  "roc_auc": 0.5529131985731273,
+  "zero_cn_fraction": 0.9827586206896551,
+  "zero_cn_count": 57,
+  "zero_cn_positives": 28,
+  "zero_cn_metrics": {
+    "ap": 0.5278822055137844,
+    "roc_auc": 0.5369458128078819
+  },
+  "stats": {
+    "cn_checks": 87,
+    "three_hop_visits": 224,
+    "total_checks": 311,
+    "budget_limit": 580,
+    "allocation_seconds": 3.600027412176132e-06,
+    "wall_seconds": 0.0003601999778766185,
+    "cpu_seconds": 0.0
+  },
+  "validation_stats": {
+    "cn_checks": 75,
+    "three_hop_visits": 232,
+    "total_checks": 307,
+    "budget_limit": 540,
+    "allocation_seconds": 1.3299984857439995e-05,
+    "wall_seconds": 0.0004008999967481941,
+    "cpu_seconds": 0.0
+  },
+  "validation": [
+    {
+      "epsilon": 0.001,
+      "ap": 0.5396825396825398,
+      "roc_auc": 0.522633744855967
+    },
+    {
+      "epsilon": 0.01,
+      "ap": 0.5396825396825398,
+      "roc_auc": 0.522633744855967
+    },
+    {
+      "epsilon": 0.1,
+      "ap": 0.5396825396825398,
+      "roc_auc": 0.522633744855967
+    }
+  ],
+  "source_sha256": "2a9b12ca50541aceb745fb542cb51065c45044a7f4028885397d3d00ecf09cbe",
+  "data": {
+    "dataset": "synthetic",
+    "sha256": "b19268099ea41c50e8943ee94cb0a912ec77fcbe8976d2576f1af8bb6cfc2bbe",
+    "nodes": 100,
+    "edges": 276,
+    "source": "synthetic seed=17",
+    "processing": "undirected, unweighted, no self-loops, unique edges; retain all nodes"
+  },
+  "split_file": "results\\smoke\\splits\\synthetic_s42_r0.5_n1.npz",
+  "scores_file": "scores/synthetic_s42_r0.5_n1_fixed_b10.npz"
+}

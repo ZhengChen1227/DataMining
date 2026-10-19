@@ -1,0 +1,27 @@
+budgets:
+- 10
+- 30
+- 100
+- 300
+datasets:
+- ca-GrQc
+- email-Eu-core
+epsilons:
+- 0.001
+- 0.01
+- 0.1
+max_hours: 8
+negative_ratios:
+- 1
+- 10
+output: results/course
+retentions:
+- 1.0
+- 0.75
+- 0.5
+seeds:
+- 42
+- 43
+- 44
+- 45
+- 46

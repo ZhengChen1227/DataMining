@@ -1,76 +1,20 @@
-# 环境搭建（RTX 4060 / 8GB 显存）
+# 从零运行项目
 
-## 结论先行
+虚拟环境是本项目自己的 Python 工具箱：安装依赖只影响 `.venv`，不会替换系统 Python。
+在仓库根目录打开 PowerShell，按 README 的四条命令运行即可。不要把 `.venv` 上传到 Git。
 
-用 **WSL2 + Ubuntu** 跑实验，不要在原生 Windows 上装 PyG / pyod 生态。
-4060 的 8GB 显存对本项目的所有模型都绰绰有余：`convae` 和 `ours` 的
-参数量都在 10 万量级，显存占用 < 1GB，瓶颈在显存之外。
+建议阅读顺序：README → docs/protocol.md → src/algorithms.py → src/data.py → src/experiment.py。
+先在四节点链 0—1—2—3 上理解为什么 (0,3) 的 CN 为零而三跳路径数为一，再看预算分配。
 
-## 1. WSL2
+`python -m src` 表示把 src 当 Python 模块执行；不要直接双击源码文件。
+出现 ModuleNotFoundError 时先确认调用的是 `.venv\Scripts\python.exe`，并从仓库根目录运行。
+下载失败可重新执行 prepare；已下载且存在的压缩包不会重复下载。数据 SHA256 在实验 JSON 中记录。
 
-```powershell
-wsl --install -d Ubuntu-22.04
-wsl --set-default-version 2
-```
+改算法后先跑 pytest，再修改输出目录跑新实验。不能把旧结果文件复制到新目录冒充新实现结果。
+已有运行结果与源码哈希绑定，核心代码变化会拒绝继续旧目录。
 
-装好后在 Ubuntu 里确认能看到 GPU：
+阶段一运行 scripts/run_stage1.ps1，只有一个随机种子，不能据此声称稳定提升。
+后续正式实验不需要 GPU，也不需要在 WSL 中运行。最大时间预算覆盖整个正式矩阵，而不是每个配置各 8 小时。
+实验完成后先读 summary.md，再对照 paired_differences.csv 查看每个种子的差值，不只看平均数。
 
-```bash
-nvidia-smi          # 应该显示 RTX 4060 与驱动版本
-```
-
-> 不要自己在 WSL 里装显卡驱动，用 Windows 侧的驱动即可。
-
-## 2. Python 环境
-
-```bash
-sudo apt update && sudo apt install -y python3.10-venv python3-pip git
-cd ~ && git clone <你的仓库地址> tsad-drift && cd tsad-drift
-python3 -m venv .venv && source .venv/bin/activate
-pip install -U pip
-```
-
-PyTorch 按官方命令装 CUDA 版本（不要直接 `pip install torch`，会装到 CPU 版）：
-
-```bash
-pip install torch --index-url https://download.pytorch.org/whl/cu121
-pip install -r requirements.txt
-```
-
-验证：
-
-```bash
-python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
-# 期望输出：2.x.x True
-```
-
-## 3. 冒烟测试
-
-```bash
-python -m src.train --list
-bash -c "python -m src.train -c configs/base.yaml -c configs/model/zscore.yaml \
-  --drift none -o data.name=synthetic --tag smoke"
-```
-
-看到逐序列的指标表格就说明环境没问题。
-
-## 4. 8GB 显存下的常用手段
-
-按优先级排序，够用就停：
-
-1. **降 batch size**：本项目的模型对 batch size 不敏感，64 甚至 32 都能收敛。
-2. **混合精度**：需要时在训练循环里加 `torch.autocast("cuda")` 与 `GradScaler`。
-3. **梯度裁剪**：已经在 `_TorchDetector` 里默认开启（`grad_clip=1.0`）。
-4. **减少窗口数**：调大 `stride`（默认 4），窗口数直接按比例下降。
-5. **降低 hidden / latent**：`hidden=32, latent=16` 仍然能复现主要结论。
-
-不建议通过削减数据集来省显存，那会改变结论的可比性。
-
-## 5. 常见坑
-
-| 现象 | 原因 | 处理 |
-| --- | --- | --- |
-| `torch.cuda.is_available()` 为 False | 装了 CPU 版 torch | 按上面 cu121 的索引重装 |
-| 显存不足 | 窗口数过多或 batch 过大 | 调大 `stride`，调小 `batch_size` |
-| 结果不可复现 | 未固定种子 / DataLoader 多进程 | 本项目已 `set_seed`；不要开 `num_workers>0` |
-| 指标与参考文献对不上 | 用了本仓库的近似指标 | 用 `src/eval/official.py` 接官方评测器 |
+阶段一交付 Markdown 汇报材料。正式论文 Word/PDF 留到后续阶段，避免在方法尚未确认时过早排版。

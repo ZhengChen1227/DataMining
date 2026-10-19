@@ -1,130 +1,101 @@
-# DataMining · 数据挖掘小组研究
+# ABLP 链接预测课程项目
 
-本仓库为数据挖掘课程的方向研究仓库，当前内容为「方向一：分布漂移下的多变量时序异常检测」。
+**研究题目：面向稀疏网络的计算预算感知型自适应链接预测。**
 
-> 原仓库自述：数据挖掘领域小组研究
+本项目研究：共同邻居不足时，按节点度数分配有限的三跳搜索预算，是否比固定预算更划算。
+ABLP 是课程实验的工作名称，创新假设是预算分配策略，不是首次使用三跳路径。
+论文结论依据实际实验，允许方法无优势或在部分条件下失败。
 
----
+**当前只交付阶段一，服务下周的阶段成果汇报。** 完整论文与系统实验安排在后续阶段，
+见 [八周计划](docs/roadmap.md) 和 [阶段一汇报材料](docs/stage1_report.md)。
 
-# TSAD-Drift
+## 快速运行（Windows PowerShell）
 
-面向分布漂移的多变量时序异常检测：通道关系建模与测试时校准。
-
-> 课程项目脚手架。目标是把「一个可复现的基准 + 一套漂移评测协议 + 一个方法原型」
-> 打包成能直接扩写成 KDD / WWW / ICDM / AAAI 投稿的工程。
-
-## 1. 研究问题
-
-主流时序异常检测方法默认 **训练集与测试集同分布、传感器通道集合固定**。
-真实系统里这两条都不成立：工况切换、传感器标定漂移、通道增减都会发生。
-本项目要回答三个问题：
-
-1. **现象**：现有方法在什么条件下会崩溃？崩溃有多严重？（动机实验，工作的命脉）
-2. **机制**：崩溃的根源是表示不稳定，还是归一化统计量失效，还是通道依赖建模过强？
-3. **方法**：如何用最小的改动恢复性能？我们探索三条路线（可任选其一或组合）：
-   - 可学习的稀疏通道图，降低对通道数量 / 顺序变化的敏感度；
-   - 环境不变性约束（V-REx / IRM 风格），让表示跨工况稳定；
-   - 测试时自适应（TTA），在无标签测试流上做轻量校准。
-
-## 2. 数据来源
-
-| 数据 | 来源 | 说明 |
-| --- | --- | --- |
-| TSB-AD | https://github.com/TheDatumOrg/TSB-AD | NeurIPS 2024 D&B，40+ 数据集统一格式，官方提供划分与评测器 |
-| SMAP / MSL | NASA 遥测，TSB-AD 与 TODS 均有打包 | 经典多变量基准 |
-| SWaT | iTrust 水处理试验台 | 工控场景 |
-| SMD | Server Machine Dataset | 服务器指标 |
-| 合成数据 | 本仓库 `src/datasets/synthetic.py` | 无需下载即可跑通全流程，用于 CI 与冒烟测试 |
-
-数据许可证与获取方式见 `data/README.md`。**所有实验必须使用官方评测器复核**，
-原因见 `docs/drift_protocol.md`。
-
-## 3. 快速开始
-
-```bash
-pip install -r requirements.txt
-
-# 冒烟测试：合成数据 + 合成漂移，无需下载任何真实数据
-python -m src.train --config configs/base.yaml --config configs/model/zscore.yaml --drift none -o data.name=synthetic
-
-# 真实数据（先在 data/README.md 里下载 TSB-AD）
-python -m src.train --config configs/base.yaml --config configs/model/iforest.yaml --drift temporal
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-lock.txt
+powershell -ExecutionPolicy Bypass -File scripts/run_smoke.ps1
+# 两个公开小型数据集；无需 GPU、API Key 或付费服务
+powershell -ExecutionPolicy Bypass -File scripts/run_stage1.ps1
 ```
 
-跑完一次实验会生成：
+无需激活虚拟环境，直接调用 `.venv` 内的 Python。首次安装通常需要网络；`requirements-lock.txt`
+记录本次验证的完整版本，`requirements.txt` 给出最小直接依赖，后者不保证未来环境完全一致。
 
-- `results/<run_id>/metrics.json`：逐 series 的指标
-- `results/<run_id>/scores/`：逐 series 的异常分数（画图 / 显著性检验用）
-- `results/<run_id>/config.yaml`：完整快照，保证可复现
+也可以分别执行：
 
-全部结果汇总成分组对比表：
-
-```bash
-python -m src.evaluate --results results --out results/summary.md
+```powershell
+.\.venv\Scripts\python.exe -m src prepare
+.\.venv\Scripts\python.exe -m src smoke
+.\.venv\Scripts\python.exe -m src run --config configs/stage1.yaml
+.\.venv\Scripts\python.exe -m src summarize --results results/stage1
 ```
 
-## 4. 实验矩阵
+重复运行同一配置会跳过已完成方法；配置或核心源码改变时必须使用新输出目录，避免旧结果混入。
+阶段一单种子小矩阵的上限为 3 分钟；后续正式矩阵预设总预算 8 小时，目前暂停。
+预算耗尽返回退出码 2，其他异常为非零退出码。中断恢复采用保守时间计费，
+非正常退出可能将离线间隔也计入预算；需要调整上限时先保留旧结果并明确说明，不静默重置。
 
-`漂移协议 x 方法 x 数据集` 是这三层正交设计：
+## 算法和输入输出
 
-```bash
-# 一键跑完整矩阵（耗时较长）
-pwsh scripts/run_all.ps1
+统一入口 `src.algorithms.predict(graph, pairs, method, budget, seed, deadline)`：
+
+- 输入仅有训练图与候选非边，禁止传入标签；节点编号为整数，候选采用 `u < v` 的规范方向。
+- 返回 CN 基础项、发现的三跳路径数、逐候选分配预算、实际访问量和计时。
+- `Prediction.scores(epsilon)` 形成最终分数；AA 使用自身基础项，不添加三跳项。
+
+| 名称 | 三跳预算策略 |
+|---|---|
+| `cn` / `aa` | 不扩展三跳 |
+| `lp` | 完整枚举，CN + epsilon × 路径数 |
+| `fixed` | 每个候选最多 B 次 |
+| `gate_uniform` | 仅 CN=0 的候选共享总预算，均分权重 |
+| `degree_only` | 所有候选按 sqrt(d(u)d(v)) 加权 |
+| `ablp` | 仅 CN=0 的候选按 sqrt(d(u)d(v)) 加权 |
+
+每批候选的总三跳预算为 M×B。ABLP 属于**批量候选评分**方法；改变候选批次或负例数量也会改变预算分配，
+不应把它当成与候选集合无关的单节点对相似度。详细定义见 [实验协议](docs/protocol.md)。
+
+## 结果与交付
+
+- [阶段一主表](results/stage1/summary.md)：训练保留比例 100%、正负例 1:1、B=100，只有一个种子。
+- `results/stage1/summary.csv`：阶段一两个预算条件的实际数值；单种子不报告标准差。
+- `results/stage1/paired_differences.csv`：同种子 ABLP 相对 fixed 的差值。
+- `results/stage1/figures/`：预算—效果及消融图；阶段一没有稀疏度实验，不作趋势解读。
+- [阶段汇报](docs/stage1_report.md)：当前完成情况、实测结果、失败条件与下周讲稿。
+- [教学式上手说明](docs/setup.md)、[创新点问答](docs/defense.md)、[实验协议](docs/protocol.md)。
+
+原始压缩数据、逐候选分数及划分文件保留在本地但默认不提交 Git，可用同一配置重新生成。
+逐次 JSON、汇总与图表是可审计的实验产物，不手工填写“提升”结果。
+
+## 项目结构
+
+```text
+src/          图处理、评分、实验、汇总和命令行
+configs/      正式矩阵与合成冒烟配置
+tests/        手算、矩阵参照、预算边界、防泄漏与端到端测试
+scripts/      PowerShell 复现入口及报告生成工具
+docs/         协议、环境与答辩材料
+data/raw/     下载的公开数据（不入 Git）
+results/      配置、环境、结果、分数、划分、图表
+reports/      后续正式论文的预留位置（阶段一不生成）
 ```
 
-| 漂移协议 | 配置 | 模拟的真实场景 |
-| --- | --- | --- |
-| `none` | `configs/base.yaml` | 同分布基线，用于对照 |
-| `temporal` | `configs/drift/temporal.yaml` | 工况切换 |
-| `channel` | `configs/drift/channel.yaml` | 传感器失效 / 通道顺序变化 |
-| `amplitude` | `configs/drift/amplitude.yaml` | 传感器标定漂移 |
+## 旧项目的可追溯性
 
-## 5. 仓库结构
+旧时序异常检测版本的提交为 `714f7798f53d1b4c69c55393510fab0be47547eb`，
+本地标签为 `archive/tsad-before-ablp`；新工作位于 `feature/ablp-course-project`。
+查看旧版可使用 `git show archive/tsad-before-ablp:README.md`，无需切换或覆盖当前文件。
+阶段一版本位于 [feature/ablp-course-project 开发分支](https://github.com/ZhengChen1227/DataMining/tree/feature/ablp-course-project)，默认分支保留旧版，合并另行安排。
 
-```
-tsad-drift/
-├── configs/                  # 实验配置（base + 模型 + 漂移，深合并）
-├── data/                     # 数据下载脚本与说明（原始数据不入库）
-├── docs/                     # 选题书、漂移协议、实验计划
-├── results/                  # 运行产物（只保留 summary.md 与图）
-├── scripts/                  # 一键复现脚本
-├── src/
-│   ├── datasets/             # 数据抽象与加载器
-│   ├── drift/                # 漂移协议（本项目的核心贡献之一）
-│   ├── models/               # 检测器：经典 / 深度 / 我们的方法
-│   ├── eval/                 # 指标、评测流程、官方评测器适配
-│   ├── utils/                # 配置、随机种子、日志
-│   ├── train.py              # 单次实验入口
-│   └── evaluate.py           # 结果汇总与显著性检验
-└── tests/                    # 指标正确性与端到端冒烟测试
-```
+## 后续完整实验
 
-## 6. 主结果表（待填）
+`configs/course.yaml` 与 `scripts/run_all.ps1` 已准备好，但本轮不继续运行。
+`results/course/progress.json` 记录暂停状态；此前已完成的部分保留供后续复核，
+不能把该目录当成已经完成的最终论文实验。阶段一资料与它分开保存。
 
-| Dataset | IForest | OCSVM | ConvAE | Anomaly Transformer | **Ours** |
-| --- | --- | --- | --- | --- | --- |
-| SMAP | | | | | |
-| MSL | | | | | |
-| SWaT | | | | | |
-| SMD | | | | | |
-| *平均* | | | | | |
+## 参考来源
 
-指标用 `VUS-PR` 与 `AUC-PR`；`point-adjust F1` 只作为对照列出现，
-并需在论文中说明其争议。
-
-## 7. 复现约定
-
-- 固定随机种子 (`seed: 42`)，所有结果记录在 `results/<run_id>/config.yaml`。
-- 归一化只使用训练段统计量，且顺序为 `加载 -> 归一化 -> 施加漂移`，
-  这样漂移不会被归一化吸收（细节见 `docs/drift_protocol.md`）。
-- 每个数据集至少跑 3 个种子，报告均值 ± 标准差。
-
-## 8. 引用
-
-```bibtex
-@inproceedings{tsbad2024,
-  title={The Elephant in the Room: Towards A Reliable Time-Series Anomaly Detection Benchmark},
-  booktitle={NeurIPS Datasets and Benchmarks Track},
-  year={2024}
-}
-```
+- Zhou, Lü, Zhang (2009), Predicting Missing Links via Local Information. https://arxiv.org/abs/0901.0553
+- Lü, Jin, Zhou (2009), Similarity Index Based on Local Paths for Link Prediction. https://doi.org/10.1103/PhysRevE.80.046122
+- SNAP 数据来源与处理记录见 [data/README.md](data/README.md)。

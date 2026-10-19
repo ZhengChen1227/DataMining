@@ -1,0 +1,9 @@
+# 下周汇报：仅检查可行性，单种子结果不能作为最终统计结论。
+datasets: [ca-GrQc, email-Eu-core]
+seeds: [42]
+retentions: [1.0]
+budgets: [10, 100]
+epsilons: [0.001, 0.01, 0.1]
+negative_ratios: [1]
+max_hours: 0.05
+output: results/stage1

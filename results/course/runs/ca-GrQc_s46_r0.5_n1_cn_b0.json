@@ -1,0 +1,58 @@
+{
+  "run_id": "ca-GrQc_s46_r0.5_n1_cn_b0",
+  "dataset": "ca-GrQc",
+  "seed": 46,
+  "retention": 0.5,
+  "negative_ratio": 1,
+  "method": "cn",
+  "budget": 0,
+  "epsilon": 0.0,
+  "n_candidates": 2898,
+  "train_nodes": 5242,
+  "train_edges": 5793,
+  "ap": 0.7400018431647535,
+  "roc_auc": 0.7401487234955594,
+  "zero_cn_fraction": 0.7574189095928227,
+  "zero_cn_count": 2195,
+  "zero_cn_positives": 750,
+  "zero_cn_metrics": {
+    "ap": 0.3416856492027335,
+    "roc_auc": 0.5
+  },
+  "stats": {
+    "cn_checks": 7582,
+    "three_hop_visits": 0,
+    "total_checks": 7582,
+    "budget_limit": 0,
+    "allocation_seconds": 6.500020390376449e-06,
+    "wall_seconds": 0.017205099982675165,
+    "cpu_seconds": 0.015625
+  },
+  "validation_stats": {
+    "cn_checks": 7158,
+    "three_hop_visits": 0,
+    "total_checks": 7158,
+    "budget_limit": 0,
+    "allocation_seconds": 1.2400007108226418e-05,
+    "wall_seconds": 0.018111800018232316,
+    "cpu_seconds": 0.03125
+  },
+  "validation": [
+    {
+      "epsilon": 0.0,
+      "ap": 0.7383125618752594,
+      "roc_auc": 0.7383545793779189
+    }
+  ],
+  "source_sha256": "2a9b12ca50541aceb745fb542cb51065c45044a7f4028885397d3d00ecf09cbe",
+  "data": {
+    "dataset": "ca-GrQc",
+    "sha256": "a254442cdf5d684712578b630c2e0d7543518ab154ef2341cabb607572ce7230",
+    "nodes": 5242,
+    "edges": 14484,
+    "source": "https://snap.stanford.edu/data/ca-GrQc.txt.gz",
+    "processing": "undirected, unweighted, no self-loops, unique edges; retain all nodes"
+  },
+  "split_file": "results\\course\\splits\\ca-GrQc_s46_r0.5_n1.npz",
+  "scores_file": "scores/ca-GrQc_s46_r0.5_n1_cn_b0.npz"
+}

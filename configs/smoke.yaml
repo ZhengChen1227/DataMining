@@ -1,0 +1,8 @@
+datasets: [synthetic]
+seeds: [42]
+retentions: [1.0, 0.5]
+budgets: [0, 10]
+epsilons: [0.001, 0.01, 0.1]
+negative_ratios: [1]
+max_hours: 0.1
+output: results/smoke

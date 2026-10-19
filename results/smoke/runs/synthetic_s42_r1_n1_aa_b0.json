@@ -1,0 +1,58 @@
+{
+  "run_id": "synthetic_s42_r1_n1_aa_b0",
+  "dataset": "synthetic",
+  "seed": 42,
+  "retention": 1.0,
+  "negative_ratio": 1,
+  "method": "aa",
+  "budget": 0,
+  "epsilon": 0.0,
+  "n_candidates": 58,
+  "train_nodes": 100,
+  "train_edges": 220,
+  "ap": 0.507567049808429,
+  "roc_auc": 0.48097502972651607,
+  "zero_cn_fraction": 0.8448275862068966,
+  "zero_cn_count": 49,
+  "zero_cn_positives": 25,
+  "zero_cn_metrics": {
+    "ap": 0.5102040816326531,
+    "roc_auc": 0.5
+  },
+  "stats": {
+    "cn_checks": 191,
+    "three_hop_visits": 0,
+    "total_checks": 191,
+    "budget_limit": 0,
+    "allocation_seconds": 8.999777492135763e-07,
+    "wall_seconds": 0.0003308999876026064,
+    "cpu_seconds": 0.0
+  },
+  "validation_stats": {
+    "cn_checks": 180,
+    "three_hop_visits": 0,
+    "total_checks": 180,
+    "budget_limit": 0,
+    "allocation_seconds": 9.00006853044033e-07,
+    "wall_seconds": 0.00039060000563040376,
+    "cpu_seconds": 0.0
+  },
+  "validation": [
+    {
+      "epsilon": 0.0,
+      "ap": 0.608641975308642,
+      "roc_auc": 0.6117969821673525
+    }
+  ],
+  "source_sha256": "2a9b12ca50541aceb745fb542cb51065c45044a7f4028885397d3d00ecf09cbe",
+  "data": {
+    "dataset": "synthetic",
+    "sha256": "b19268099ea41c50e8943ee94cb0a912ec77fcbe8976d2576f1af8bb6cfc2bbe",
+    "nodes": 100,
+    "edges": 276,
+    "source": "synthetic seed=17",
+    "processing": "undirected, unweighted, no self-loops, unique edges; retain all nodes"
+  },
+  "split_file": "results\\smoke\\splits\\synthetic_s42_r1_n1.npz",
+  "scores_file": "scores/synthetic_s42_r1_n1_aa_b0.npz"
+}
